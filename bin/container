@@ -1,0 +1,43 @@
+#!/bin/sh
+
+CURRENT_DIR=$(pwd)
+TOOLS_DIR=$(dirname $(readlink -m $0))
+COMMAND=$1
+E_OUT='>&2'
+
+### Command selection
+if [ $# -lt 1 ] || [ ! "${COMMAND}" ]; then
+    echo Please select command. >&2
+    exit 1;
+fi
+
+shift 1
+
+### Docker installation?
+if ! which docker > /dev/null; then
+    echo No docker-engine installed. >&2
+    exit 2
+fi
+
+if ! docker ps > /dev/null; then
+    echo docker-engine is not properly installed or docker daemon has not started. >&2
+    exit 3
+fi
+
+
+### Execute command
+SUBCOMMAND_DIR="${TOOLS_DIR}/container_sub"
+COMMAND_DIR="${SUBCOMMAND_DIR}/${COMMAND}"
+
+
+if [ -x "${COMMAND_DIR}" ]; then
+    export TOOLS_DIR
+    export CURRENT_DIR
+    export COMMAND
+    export SUBCOMMAND_DIR
+    "${COMMAND_DIR}" $*
+    exit $?
+fi
+
+echo "Command ${COMMAND} not found" >&2
+exit 4

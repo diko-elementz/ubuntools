@@ -1,0 +1,34 @@
+#!/bin/sh
+
+HOME_BIN=$(readlink -m ~/bin)
+TOOLS_DIR=$(dirname $(readlink -m $0))/bin
+RESTORE_DIR=$(pwd)
+
+if [ ! -d "${HOME_BIN}" ]; then
+    mkdir ${HOME_BIN}
+fi
+
+cd "${TOOLS_DIR}"
+for FILE in $(find *); do
+    
+    if [ ! -r "${FILE}" ]; then
+        echo "Unable to read file/directory ${FILE}" >&2
+        cd "${RESTORE_DIR}"
+        exit 1
+    fi
+    
+    TARGET="${HOME_BIN}/${FILE}"
+    if [ -e "${TARGET}" ]; then
+        rm -Rf "${TARGET}"
+    fi
+        
+    if [ -d "${FILE}" ]; then
+        mkdir "${TARGET}"
+        
+    else
+        cp "${FILE}" $(dirname "${TARGET}")
+    fi
+done
+
+cd "${RESTORE_DIR}"
+exit 0

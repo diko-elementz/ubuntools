@@ -1,0 +1,7 @@
+#/bin/sh
+
+. "${SUBCOMMAND_DIR}/dockerfile_check.sh" $*
+. "${SUBCOMMAND_DIR}/command_ref_check.sh" $*
+
+echo "tools: ${TOOLS_DIR}"
+echo "build options: ${*}"
