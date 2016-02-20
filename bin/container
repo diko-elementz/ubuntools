@@ -1,13 +1,15 @@
 #!/bin/sh
 
 CURRENT_DIR=$(pwd)
+REF_NAME=$(basename $CURRENT_DIR)
+DOCKERFILE="${CURRENT_DIR}/Dockerfile"
 TOOLS_DIR=$(dirname $(readlink -m $0))
 COMMAND=$1
 E_OUT='>&2'
 
 ### Command selection
 if [ $# -lt 1 ] || [ ! "${COMMAND}" ]; then
-    echo Please select command. >&2
+    echo "! Please select command." >&2
     exit 1;
 fi
 
@@ -15,15 +17,20 @@ shift 1
 
 ### Docker installation?
 if ! which docker > /dev/null; then
-    echo No docker-engine installed. >&2
+    echo "! No docker-engine installed." >&2
     exit 2
 fi
 
 if ! docker ps > /dev/null; then
-    echo docker-engine is not properly installed or docker daemon has not started. >&2
-    exit 3
+    echo "! docker-engine is not properly installed or docker daemon has not started." >&2
+    exit 20
 fi
 
+### Dockerfile check
+if [ ! -f "${DOCKERFILE}" ] || [ ! -r "${DOCKERFILE}" ]; then
+    echo "! Dockerfile do no exist in this directory." >&2
+    exit 21
+fi
 
 ### Execute command
 SUBCOMMAND_DIR="${TOOLS_DIR}/container_sub"
@@ -34,10 +41,13 @@ if [ -x "${COMMAND_DIR}" ]; then
     export TOOLS_DIR
     export CURRENT_DIR
     export COMMAND
+    export DOCKERFILE
+    export REF_NAME
     export SUBCOMMAND_DIR
-    "${COMMAND_DIR}" $*
-    exit $?
+    eval ${COMMAND_DIR} $* || exit $?
+    exit 0
 fi
 
-echo "Command ${COMMAND} not found" >&2
+echo "! Command ${COMMAND} not found" >&2
+
 exit 4

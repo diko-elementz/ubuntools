@@ -1,7 +1,13 @@
 #/bin/sh
 
-. "${SUBCOMMAND_DIR}/dockerfile_check.sh" $*
-. "${SUBCOMMAND_DIR}/command_ref_check.sh" $*
 
-echo "tools: ${TOOLS_DIR}"
-echo "build options: ${*}"
+echo "* Building image... ${REF_NAME}"
+echo 
+if ! docker build -t ${REF_NAME} .; then
+    echo "! Unable to build Image ${REF_NAME}" >&2
+    exit 30
+fi
+
+echo "* Built image: ${REF_NAME}"
+
+exit 0

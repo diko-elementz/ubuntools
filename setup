@@ -8,27 +8,35 @@ if [ ! -d "${HOME_BIN}" ]; then
     mkdir ${HOME_BIN}
 fi
 
+if [ ! -w "${HOME_BIN}" ]; then
+    echo "You have no write permission to ${HOME_BIN}" >&2
+    exit 1
+fi
+
 cd "${TOOLS_DIR}"
-for FILE in $(find *); do
-    
-    if [ ! -r "${FILE}" ]; then
-        echo "Unable to read file/directory ${FILE}" >&2
-        cd "${RESTORE_DIR}"
-        exit 1
+chmod +x $(find . -type f | grep -v '.sh')
+
+for FILE in $(ls -1); do
+
+    FULL_PATH="${TOOLS_DIR}/${FILE}"
+
+    if [ -d "${FULL_PATH}" ]; then
+        if ! cp -Rf "${FULL_PATH}" "${HOME_BIN}"; then
+            echo "There were errors copying files ${FULL_PATH} to ${HOME_BIN}" >&2
+            exit 2
+        fi
+    elif [ -f "${FULL_PATH}" ]; then
+        if ! cp "${FULL_PATH}" "${HOME_BIN}"; then
+            echo "There were errors copying files ${FULL_PATH} to ${HOME_BIN}" >&2
+            exit 2
+        fi
     fi
-    
-    TARGET="${HOME_BIN}/${FILE}"
-    if [ -e "${TARGET}" ]; then
-        rm -Rf "${TARGET}"
-    fi
-        
-    if [ -d "${FILE}" ]; then
-        mkdir "${TARGET}"
-        
-    else
-        cp "${FILE}" $(dirname "${TARGET}")
-    fi
+
 done
+
+cd "${HOME_BIN}"
+
+chmod +x $(find . -type f | grep -v '.sh')
 
 cd "${RESTORE_DIR}"
 exit 0

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+export SERVICE_SOURCE=/app-source
+export SERVICE_SOURCE_ENV=PROJECT_SOURCE
+
+
+export SERVICE_TOOLS=/app-tools
+export SERVICE_TOOLS_ENV=PROJECT_TOOLS
+export SERVICE_TOOLS_SOURCE=${SUBCOMMAND_DIR}/container_bin
+
