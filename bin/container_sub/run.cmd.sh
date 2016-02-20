@@ -10,11 +10,20 @@
 # options
 ######################
 COMMAND_OPTIONS="
+# rebuild image
+-r REBUILD 0
 
--p PORTS 1
--e ENVS 1
--i INTERACTIVE 0
+# assign hostname
 -h HOST_NAME 1
+
+# assign port
+-p PORTS 1
+
+# assign environment variable
+-e ENVS 1
+
+# interactive mode
+-i INTERACTIVE 0
 
 "
 . "${SUBCOMMAND_DIR}/command_options_process.sh" $*
@@ -27,10 +36,19 @@ container stop || exit $?
 
 
 ######################
+# rebuild image
+######################
+IMAGES=$(docker images -q ${REF_NAME})
+if [ "${IMAGES" ] && [ "${REBUILD_HAS_VALUE}" ]; then
+    container unbuild || exit $?
+fi
+
+
+######################
 # find/create image
 ######################
 IMAGES=$(docker images -q ${REF_NAME})
-if [ ! "$IMAGES" ]; then
+if [ ! "${IMAGES}" ]; then
     container build || exit $?
 fi
 
