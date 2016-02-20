@@ -10,6 +10,7 @@
 # options
 ######################
 COMMAND_OPTIONS="
+
 # rebuild image
 -r REBUILD 0
 
@@ -26,6 +27,8 @@ COMMAND_OPTIONS="
 -i INTERACTIVE 0
 
 "
+
+
 . "${SUBCOMMAND_DIR}/command_options_process.sh" $*
 
 
@@ -39,7 +42,7 @@ container stop || exit $?
 # rebuild image
 ######################
 IMAGES=$(docker images -q ${REF_NAME})
-if [ "${IMAGES" ] && [ "${REBUILD_HAS_VALUE}" ]; then
+if [ "${IMAGES}" ] && [ "${REBUILD_HAS_VALUE}" ]; then
     container unbuild || exit $?
 fi
 
