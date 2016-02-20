@@ -17,8 +17,15 @@ COMMAND_OPTIONS="
 -m SHOW_MINIMAL 0
 --minimal SHOW_MINIMAL 0
 
+# show active
+-a SHOW_ACTIVE 0
+--active SHOW_ACTIVE 0
+
+# show hostname
+-h SHOW_HOSTNAME 0
+--host SHOW_HOSTNAME 0
+
 # history
--h SHOW_HISTORY 0
 --history SHOW_HISTORY 0
 
 # logs
@@ -28,6 +35,11 @@ COMMAND_OPTIONS="
 # stats
 -s SHOW_STATS 0
 --stats SHOW_STATS 0
+
+# ip address
+-i SHOW_IP 0
+--ip SHOW_IP 0
+
 "
 . "${SUBCOMMAND_DIR}/command_options_process.sh" $*
 
@@ -59,9 +71,16 @@ fi
 # active container
 ###################### 
 if [ "${IS_ACTIVE}" ]; then
+    
+    SHOW_ACTIVE="${IS_ACTIVE}"
+    
+    CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "${IS_ACTIVE}")
+    CONTAINER_HOSTNAME=$(docker inspect -f '{{.Config.Hostname}}' "${IS_ACTIVE}")
+    
     if [ "${SHOW_LOGS_HAS_VALUE}" ]; then
-        CONTAINER_LOGS=$(docker logs "${CONTAINERS}")
+        CONTAINER_LOGS=$(docker logs "${IS_ACTIVE}")
     fi
+    
 fi
 
 
@@ -71,11 +90,15 @@ fi
 if [ "${SHOW_MINIMAL_HAS_VALUE}" ]; then
     
     if [ "${SHOW_NAME_HAS_VALUE}" ]; then
-        echo ${REF_NAME}
+        echo "${REF_NAME}"
     fi
     
     if [ "${SHOW_DOCKERFILE_HAS_VALUE}" ]; then
         echo "${DOCKERFILE}"
+    fi
+    
+    if [ "${SHOW_ACTIVE_HAS_VALUE}" ]; then
+        echo "${IS_ACTIVE}"
     fi
     
     if [ "${SHOW_HISTORY_HAS_VALUE}" ]; then
@@ -90,10 +113,20 @@ if [ "${SHOW_MINIMAL_HAS_VALUE}" ]; then
         echo "${CONTAINER_STATS}"
     fi
     
+    if [ "${SHOW_IP_HAS_VALUE}" ]; then
+        echo "${CONTAINER_IP}"
+    fi
+    
+    if [ "${SHOW_HOSTNAME_HAS_VALUE}" ]; then
+        echo "${CONTAINER_HOSTNAME}"
+    fi
+    
 else
     # profile
     echo "Name: ${REF_NAME}"
     echo "Docker file: ${DOCKERFILE}"
+    echo "IP Adress: ${CONTAINER_IP}"
+    echo "Hostname: ${CONTAINER_HOSTNAME}"
     
     if [ "${IMAGES}" ]; then
         echo "Image ID: ${IMAGES}"

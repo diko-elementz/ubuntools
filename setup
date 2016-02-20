@@ -14,7 +14,7 @@ if [ ! -w "${HOME_BIN}" ]; then
 fi
 
 cd "${TOOLS_DIR}"
-chmod +x $(find . -type f | grep -v '.sh')
+chmod +x $(find . -type f | grep '.cmd.sh')
 
 for FILE in $(ls -1); do
 
@@ -36,7 +36,7 @@ done
 
 cd "${HOME_BIN}"
 
-chmod +x $(find . -type f | grep -v '.sh')
+chmod +x $(find . -type f | grep '.cmd.sh')
 
 cd "${RESTORE_DIR}"
 exit 0

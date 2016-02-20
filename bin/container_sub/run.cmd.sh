@@ -14,6 +14,7 @@ COMMAND_OPTIONS="
 -p PORTS 1
 -e ENVS 1
 -i INTERACTIVE 0
+-h HOST_NAME 1
 
 "
 . "${SUBCOMMAND_DIR}/command_options_process.sh" $*
@@ -55,6 +56,12 @@ DOCKER_CMD="${DOCKER_CMD} -e '${SERVICE_TOOLS_ENV}=${SERVICE_TOOLS}'"
 ######################
 # options
 ######################
+# hostname
+if [ "${HOST_NAME}" ]; then
+    DOCKER_CMD="${DOCKER_CMD} -h ${HOST_NAME}"
+else
+    DOCKER_CMD="${DOCKER_CMD} -h ${REF_NAME}"
+fi
 # ports
 for PORT in ${PORTS}; do
     if echo "${PORT}" | grep -q '^[0-9][0-9]*\:[0-9][0-9]*$'; then

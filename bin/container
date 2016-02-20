@@ -34,7 +34,7 @@ fi
 
 ### Execute command
 SUBCOMMAND_DIR="${TOOLS_DIR}/container_sub"
-COMMAND_DIR="${SUBCOMMAND_DIR}/${COMMAND}"
+COMMAND_DIR="${SUBCOMMAND_DIR}/${COMMAND}.cmd.sh"
 
 
 if [ -x "${COMMAND_DIR}" ]; then
