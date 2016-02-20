@@ -12,7 +12,7 @@
 COMMAND_OPTIONS="
 
 -p PORTS 1
--e ENV 1
+-e ENVS 1
 -i INTERACTIVE 0
 
 "
@@ -60,6 +60,11 @@ for PORT in ${PORTS}; do
     if echo "${PORT}" | grep -q '^[0-9][0-9]*\:[0-9][0-9]*$'; then
         DOCKER_CMD="${DOCKER_CMD} -p ${PORT}"
     fi
+done
+
+# env variables
+for ENV in ${ENVS}; do
+    DOCKER_CMD="${DOCKER_CMD} -e '${ENVS}'"
 done
 
 
