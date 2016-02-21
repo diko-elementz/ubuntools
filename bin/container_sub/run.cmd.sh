@@ -42,7 +42,7 @@ container stop || exit $?
 # rebuild image
 ######################
 IMAGES=$(docker images -q ${REF_NAME})
-if [ "${IMAGES}" ] && [ "${REBUILD_HAS_VALUE}" ]; then
+if [ "${IMAGES}ker" ] && [ "${REBUILD_HAS_VALUE}" ]; then
     container unbuild || exit $?
 fi
 
@@ -68,10 +68,6 @@ DOCKER_CMD="docker run --name ${REF_NAME}"
 # mount docker source files
 DOCKER_CMD="${DOCKER_CMD} -v ${CURRENT_DIR}:${SERVICE_SOURCE}:ro"
 DOCKER_CMD="${DOCKER_CMD} -e '${SERVICE_SOURCE_ENV}=${SERVICE_SOURCE}'"
-
-# mount container tools
-DOCKER_CMD="${DOCKER_CMD} -v ${SERVICE_TOOLS_SOURCE}:${SERVICE_TOOLS}:ro"
-DOCKER_CMD="${DOCKER_CMD} -e '${SERVICE_TOOLS_ENV}=${SERVICE_TOOLS}'"
 
 
 ######################

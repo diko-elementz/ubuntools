@@ -25,6 +25,10 @@ COMMAND_OPTIONS="
 -h SHOW_HOSTNAME 0
 --host SHOW_HOSTNAME 0
 
+# show volume size
+-v SHOW_VOLUME_SIZE 0
+--size SHOW_VOLUME_SIZE 0
+
 # history
 --history SHOW_HISTORY 0
 
@@ -127,6 +131,7 @@ else
     echo "Docker file: ${DOCKERFILE}"
     echo "IP Adress: ${CONTAINER_IP}"
     echo "Hostname: ${CONTAINER_HOSTNAME}"
+    echo "Disk Usage: ${SHOW_VOLUME_SIZE}"
     
     if [ "${IMAGES}" ]; then
         echo "Image ID: ${IMAGES}"

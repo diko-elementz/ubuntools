@@ -1,6 +1,14 @@
 #!/bin/sh
 
 ######################
+# destroy containers
+######################
+CONTAINERS=$(docker ps -a -q -f name=${REF_NAME})
+if [ "${CONTAINERS}" ]; then
+    container stop ${REF_NAME}
+fi
+
+######################
 # destroy images
 ######################
 IMAGES=$(docker images -q ${REF_NAME})
