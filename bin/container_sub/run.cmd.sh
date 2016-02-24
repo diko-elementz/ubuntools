@@ -26,6 +26,9 @@ COMMAND_OPTIONS="
 # interactive mode
 -i INTERACTIVE 0
 
+# output mode
+-o OUTPUT 0
+
 "
 
 
@@ -95,6 +98,10 @@ done
 # interactive
 if [ "${INTERACTIVE_HAS_VALUE}" ]; then
     DOCKER_CMD="${DOCKER_CMD} -t -i"
+    
+elif [ "${OUTPUT_HAS_VALUE}" ]; then
+    DOCKER_CMD="${DOCKER_CMD} -t"
+    
 else
     DOCKER_CMD="${DOCKER_CMD} -d"
 fi
