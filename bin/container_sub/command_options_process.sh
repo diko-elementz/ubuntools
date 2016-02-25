@@ -28,8 +28,7 @@ if [ "${COMMAND_OPTIONS}" ]; then
                 COUNT=$(expr ${COUNT} - 1)
                 FOUND_COUNT=$(expr ${FOUND_COUNT} + 1)
                 if [ "${VALUE}" ]; then
-                    VALUE="${VALUE}
-${ARG}"
+                    VALUE="${VALUE}"'\n'"${ARG}"
                 else
                     VALUE="${ARG}"
                 fi

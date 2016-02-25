@@ -29,6 +29,8 @@ COMMAND_OPTIONS="
 # output mode
 -o OUTPUT 0
 
+# dry run
+-d DRY_RUN 0
 "
 
 
@@ -83,17 +85,20 @@ else
     DOCKER_CMD="${DOCKER_CMD} -h ${REF_NAME}"
 fi
 # ports
-for PORT in ${PORTS}; do
+while read -r PORT; do
     if echo "${PORT}" | grep -q '^[0-9][0-9]*\:[0-9][0-9]*$'; then
         DOCKER_CMD="${DOCKER_CMD} -p ${PORT}"
     fi
-done
+done <<EOT
+$(echo "${PORTS}")
+EOT
 
 # env variables
-for ENV in ${ENVS}; do
-    DOCKER_CMD="${DOCKER_CMD} -e '${ENVS}'"
-done
-
+while read -r ENV; do
+    DOCKER_CMD="${DOCKER_CMD} -e '${ENV}'"
+done <<HERE
+$(echo "${ENVS}")
+HERE
 
 # interactive
 if [ "${INTERACTIVE_HAS_VALUE}" ]; then
@@ -118,9 +123,14 @@ if [ "${INTERACTIVE_HAS_VALUE}" ]; then
 fi
 
 echo "* Running container ${REF_NAME}..."
-echo 
+echo
 echo ${DOCKER_CMD}
 echo
+
+
+if [ "${DRY_RUN_HAS_VALUE}" ]; then
+    exit 0
+fi
 
 if ! eval ${DOCKER_CMD}; then
     echo "! There were errors Running the command." >&2
