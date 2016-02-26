@@ -95,7 +95,9 @@ EOT
 
 # env variables
 while read -r ENV; do
-    DOCKER_CMD="${DOCKER_CMD} -e '${ENV}'"
+    if [ "${ENV}" ]; then
+        DOCKER_CMD="${DOCKER_CMD} -e '${ENV}'"
+    fi
 done <<HERE
 $(echo "${ENVS}")
 HERE
