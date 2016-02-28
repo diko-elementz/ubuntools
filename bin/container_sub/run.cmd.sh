@@ -26,11 +26,16 @@ COMMAND_OPTIONS="
 # interactive mode
 -i INTERACTIVE 0
 
+# use interactive sh shell
+-u UNIX_SHELL
+
 # output mode
 -o OUTPUT 0
 
 # dry run
 -d DRY_RUN 0
+
+
 "
 
 
@@ -121,7 +126,11 @@ DOCKER_CMD="${DOCKER_CMD} ${REF_NAME}"
 
 # for interactive, run shell
 if [ "${INTERACTIVE_HAS_VALUE}" ]; then
-    DOCKER_CMD="${DOCKER_CMD} /bin/sh"
+    if [ "${UNIX_SHELL_HAS_VALUE}" ]; then
+        DOCKER_CMD="${DOCKER_CMD} /bin/sh"
+    else
+        DOCKER_CMD="${DOCKER_CMD} /bin/bash"
+    fi
 fi
 
 echo "* Running container ${REF_NAME}..."
