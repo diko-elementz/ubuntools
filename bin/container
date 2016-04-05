@@ -6,6 +6,7 @@ DOCKERFILE="${CURRENT_DIR}/Dockerfile"
 TOOLS_DIR=$(dirname $(readlink -m $0))
 COMMAND=$1
 E_OUT='>&2'
+DOCKER_FILE_EXISTS=
 
 ### Command selection
 if [ $# -lt 1 ] || [ ! "${COMMAND}" ]; then
@@ -27,7 +28,8 @@ if ! docker ps > /dev/null; then
 fi
 
 ### Dockerfile check
-if [ ! -f "${DOCKERFILE}" ] || [ ! -r "${DOCKERFILE}" ]; then
+if [ -f "${DOCKERFILE}" ] && [ -r "${DOCKERFILE}" ]; then
+    echo "found: ${DOCKERFILE}"
     DOCKER_FILE_EXISTS=true
 fi
 
