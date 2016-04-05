@@ -29,7 +29,6 @@ fi
 
 ### Dockerfile check
 if [ -f "${DOCKERFILE}" ] && [ -r "${DOCKERFILE}" ]; then
-    echo "found: ${DOCKERFILE}"
     DOCKER_FILE_EXISTS=true
 fi
 

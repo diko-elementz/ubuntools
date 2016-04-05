@@ -26,7 +26,9 @@ COMMAND_OPTIONS="
 
 
 if [ "${UNIX_SHELL_HAS_VALUE}" ]; then
+    echo docker exec -t -i "${CONTAINER}" /bin/sh
     docker exec -t -i "${CONTAINER}" /bin/sh
 else
+    echo docker exec -t -i "${CONTAINER}" /bin/bash
     docker exec -t -i "${CONTAINER}" /bin/bash
 fi
