@@ -1,5 +1,10 @@
 #/bin/sh
 
+if [ "${DOCKER_FILE_EXISTS}" != "true" ]; then
+    echo "! Dockerfile do no exist in this directory." >&2
+    exit 21;
+fi
+
 COMMAND_OPTIONS="
 -i UNBUILD 0
 -s STOP_ONLY 0

@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ "${DOCKER_FILE_EXISTS}" != "true" ]; then
+    echo "! Dockerfile do no exist in this directory." >&2
+    exit 21;
+fi
 
 ######################
 # load defaults
@@ -110,10 +114,10 @@ HERE
 # interactive
 if [ "${INTERACTIVE_HAS_VALUE}" ]; then
     DOCKER_CMD="${DOCKER_CMD} -t -i"
-    
+
 elif [ "${OUTPUT_HAS_VALUE}" ]; then
     DOCKER_CMD="${DOCKER_CMD} -t"
-    
+
 else
     DOCKER_CMD="${DOCKER_CMD} -d"
 fi

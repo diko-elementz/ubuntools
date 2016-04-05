@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ "${DOCKER_FILE_EXISTS}" != "true" ]; then
+    echo "! Dockerfile do no exist in this directory." >&2
+    exit 21;
+fi
 
 CONTAINER=$(container info -a -m)
 
@@ -13,7 +17,7 @@ CONTAINER=$(container info -a -m)
 ######################
 COMMAND_OPTIONS="
 
-# use bin/sh 
+# use bin/sh
 -u UNIX_SHELL 0
 
 "

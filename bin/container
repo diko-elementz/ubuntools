@@ -28,8 +28,7 @@ fi
 
 ### Dockerfile check
 if [ ! -f "${DOCKERFILE}" ] || [ ! -r "${DOCKERFILE}" ]; then
-    echo "! Dockerfile do no exist in this directory." >&2
-    exit 21
+    DOCKER_FILE_EXISTS=true
 fi
 
 ### Execute command
@@ -44,6 +43,7 @@ if [ -x "${COMMAND_DIR}" ]; then
     export DOCKERFILE
     export REF_NAME
     export SUBCOMMAND_DIR
+    export DOCKER_FILE_EXISTS
     eval ${COMMAND_DIR} $* || exit $?
     exit 0
 fi

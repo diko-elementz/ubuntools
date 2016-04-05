@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ "${DOCKER_FILE_EXISTS}" != "true" ]; then
+    echo "! Dockerfile do no exist in this directory." >&2
+    exit 21;
+fi
 
 ######################
 # load defaults
@@ -73,18 +77,18 @@ fi
 ######################
 # get info of
 # active container
-###################### 
+######################
 if [ "${IS_ACTIVE}" ]; then
-    
+
     SHOW_ACTIVE="${IS_ACTIVE}"
-    
+
     CONTAINER_IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "${IS_ACTIVE}")
     CONTAINER_HOSTNAME=$(docker inspect -f '{{.Config.Hostname}}' "${IS_ACTIVE}")
-    
+
     if [ "${SHOW_LOGS_HAS_VALUE}" ]; then
         CONTAINER_LOGS=$(docker logs "${IS_ACTIVE}")
     fi
-    
+
 fi
 
 
@@ -92,39 +96,39 @@ fi
 # show info
 ######################
 if [ "${SHOW_MINIMAL_HAS_VALUE}" ]; then
-    
+
     if [ "${SHOW_NAME_HAS_VALUE}" ]; then
         echo "${REF_NAME}"
     fi
-    
+
     if [ "${SHOW_DOCKERFILE_HAS_VALUE}" ]; then
         echo "${DOCKERFILE}"
     fi
-    
+
     if [ "${SHOW_ACTIVE_HAS_VALUE}" ]; then
         echo "${IS_ACTIVE}"
     fi
-    
+
     if [ "${SHOW_HISTORY_HAS_VALUE}" ]; then
         echo "${IMAGE_HISTORY}"
     fi
-    
+
     if [ "${SHOW_LOGS_HAS_VALUE}" ]; then
         echo "${CONTAINER_LOGS}"
     fi
-    
+
     if [ "${SHOW_STATS_HAS_VALUE}" ]; then
         echo "${CONTAINER_STATS}"
     fi
-    
+
     if [ "${SHOW_IP_HAS_VALUE}" ]; then
         echo "${CONTAINER_IP}"
     fi
-    
+
     if [ "${SHOW_HOSTNAME_HAS_VALUE}" ]; then
         echo "${CONTAINER_HOSTNAME}"
     fi
-    
+
 else
     # profile
     echo "Name: ${REF_NAME}"
@@ -132,25 +136,25 @@ else
     echo "IP Adress: ${CONTAINER_IP}"
     echo "Hostname: ${CONTAINER_HOSTNAME}"
     echo "Disk Usage: ${SHOW_VOLUME_SIZE}"
-    
+
     if [ "${IMAGES}" ]; then
         echo "Image ID: ${IMAGES}"
     else
         echo "Image ID: <not built>"
     fi
-    
+
     if [ "${CONTAINERS}" ]; then
         echo "Container ID: ${CONTAINERS}"
     else
         echo "Container ID: <not created>"
     fi
-    
+
     if [ "${IS_ACTIVE}" ]; then
         echo "Container Active: yes"
     else
         echo "Container Active: no"
     fi
-    
+
     if [ "${SHOW_STATS_HAS_VALUE}" ]; then
         echo
         if [ "${CONTAINER_STATS}" ]; then
@@ -161,7 +165,7 @@ else
         fi
         echo
     fi
-    
+
     if [ "${SHOW_LOGS_HAS_VALUE}" ]; then
         echo
         if [ "${CONTAINER_LOGS}" ]; then
@@ -172,7 +176,7 @@ else
         fi
         echo
     fi
-    
+
     if [ "${SHOW_HISTORY_HAS_VALUE}" ]; then
         echo
         if [ "${IMAGE_HISTORY}" ]; then
@@ -183,7 +187,7 @@ else
         fi
         echo
     fi
-    
+
 fi
 
 exit 0
