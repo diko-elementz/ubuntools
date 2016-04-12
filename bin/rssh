@@ -1,0 +1,43 @@
+#!/bin/sh
+
+SSH_DIR=$(readlink -m "~/.ssh")
+. $(dirname $(readlink -m $0))/ubuntools_defaults.sh $*
+
+### Command selection
+if [ $# -lt 1 ] || [ ! "${COMMAND}" ]; then
+    echo "! Please select command." >&2
+    exit 1;
+fi
+
+shift 1
+
+
+### Check if .ssh exists
+if [ ! -d "${SSH_DIR}" ]; then
+    mkdir -p "${SSH_DIR}" || exit 2
+    chmod 700 "${SSH_DIR}"
+fi
+
+if [ ! -d "${SSH_DIR}" ] || [ ! -r "${SSH_DIR}" ]; then
+    echo "! Permission denied to access ${SSH_DIR}." >&2
+    exit 3
+fi
+
+### Execute command
+SUBCOMMAND_DIR="${TOOLS_DIR}/rsh_sub"
+COMMAND_DIR="${SUBCOMMAND_DIR}/${COMMAND}.cmd.sh"
+
+if [ -x "${COMMAND_DIR}" ]; then
+    export TOOLS_DIR
+    export CURRENT_DIR
+    export COMMAND
+    export SSH_DIR
+    export REF_NAME
+    export SUBCOMMAND_DIR
+    eval ${COMMAND_DIR} $* || exit $?
+    exit 0
+fi
+
+echo "! Command ${COMMAND} not found" >&2
+
+exit 4

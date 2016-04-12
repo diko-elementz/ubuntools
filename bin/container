@@ -1,10 +1,14 @@
 #!/bin/sh
 
-CURRENT_DIR=$(pwd)
-REF_NAME=$(basename $CURRENT_DIR)
-DOCKERFILE="${CURRENT_DIR}/Dockerfile"
-TOOLS_DIR=$(dirname $(readlink -m $0))
-COMMAND=$1
+#CURRENT_DIR=$(pwd)
+#REF_NAME=$(basename $CURRENT_DIR)
+#DOCKERFILE="${CURRENT_DIR}/Dockerfile"
+#TOOLS_DIR=$(dirname $(readlink -m $0))
+#CMD_PARAM_PROCESS="${CURRENT_DIR}/command_options_process.sh"
+#COMMAND=$1
+
+. $(dirname $(readlink -m $0))/ubuntools_defaults.sh $*
+
 E_OUT='>&2'
 DOCKER_FILE_EXISTS=
 

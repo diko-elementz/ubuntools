@@ -22,7 +22,7 @@ COMMAND_OPTIONS="
 
 "
 
-. "${SUBCOMMAND_DIR}/command_options_process.sh" $*
+. "${CMD_PARAM_PROCESS}" $*
 
 
 if [ "${UNIX_SHELL_HAS_VALUE}" ]; then
