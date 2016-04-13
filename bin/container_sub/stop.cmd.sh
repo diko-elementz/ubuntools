@@ -9,7 +9,7 @@ COMMAND_OPTIONS="
 -i UNBUILD 0
 -s STOP_ONLY 0
 "
-. "${CMD_PARAM_PROCESS}" $*
+. "${SUBCOMMAND_DIR}/command_options_process.sh" $*
 
 ######################
 # close running

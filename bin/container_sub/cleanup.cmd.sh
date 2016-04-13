@@ -3,7 +3,7 @@
 COMMAND_OPTIONS="
 -i REMOVE_UNTAGGED_IMAGES 0
 "
-. "${CMD_PARAM_PROCESS}" $*
+. "${SUBCOMMAND_DIR}/command_options_process.sh" $*
 
 
 ACTIVE_CONTAINERS=$(docker ps -q)

@@ -43,7 +43,7 @@ COMMAND_OPTIONS="
 "
 
 
-. "${CMD_PARAM_PROCESS}" $*
+. "${SUBCOMMAND_DIR}/command_options_process.sh" $*
 
 
 ######################

@@ -49,7 +49,7 @@ COMMAND_OPTIONS="
 --ip SHOW_IP 0
 
 "
-. "${CMD_PARAM_PROCESS}" $*
+. "${SUBCOMMAND_DIR}/command_options_process.sh" $*
 
 ######################
 # get info
